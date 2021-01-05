@@ -3,13 +3,29 @@ version: '3.1'
 services:
   postgres:
     image: postgres:alpine
+    container_name: postgres
     restart: unless-stopped
     ports:
       - "5432:5432"
+    expose:
+      - "5432"
     environment:
       POSTGRES_PASSWORD: postgres
     networks:
-      - postgres-network   
+      - postgres-network 
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "antonioraggid@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "PgAdmin!"
+    ports:
+      - "15432:80"
+    depends_on:
+      - postgres
+    networks:
+      - postgres-network  
 
 networks: 
   postgres-network:
